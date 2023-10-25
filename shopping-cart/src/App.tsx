@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Breadcrumb, Button, Flex, Layout, Menu, theme } from "antd";
+import { Button, Layout, Menu, Radio, Space, theme, Typography } from "antd";
 import DisplayProducts from "./components/DisplayProducts";
 import AddNewProduct from "./components/AddNewProduct";
 
 const { Header, Content, Sider } = Layout;
+const { Title, Text } = Typography;
 
 const App: React.FC = () => {
   const {
@@ -11,6 +12,11 @@ const App: React.FC = () => {
   } = theme.useToken();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [value, setValue] = useState();
+
+  const onChange = (e: any) => {
+    setValue(e.target.value);
+  };
 
   return (
     <Layout>
@@ -48,7 +54,18 @@ const App: React.FC = () => {
         </Button>
       </Header>
       <Layout>
-        <Sider width={200} style={{ background: colorBgContainer }}></Sider>
+        <Sider
+          width={200}
+          style={{ background: colorBgContainer, paddingLeft: "12px" }}
+        >
+          <Title level={5}>Sort By</Title>
+          <Radio.Group onChange={onChange} value={value}>
+            <Space direction="vertical">
+              <Radio value={1}>Price Low to High</Radio>
+              <Radio value={2}>Price High to Low</Radio>
+            </Space>
+          </Radio.Group>
+        </Sider>
         <Layout style={{ padding: "0 24px 24px" }}>
           <Content
             style={{

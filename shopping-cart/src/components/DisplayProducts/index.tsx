@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Flex, Rate } from "antd";
-import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  products,
+  isLoading,
+  getAllProducts,
+} from "../../store/reducers/productSlice";
 
 import { Typography } from "antd";
 
@@ -9,12 +14,11 @@ const { Title } = Typography;
 const { Meta } = Card;
 
 const DisplayProducts: React.FC = () => {
-  const [products, setProducts] = useState<any>([]);
+  const dispatch = useDispatch<any>();
+  const productsList: any = useSelector(products);
 
   useEffect(() => {
-    axios.get("http://localhost:8000/products/").then((response) => {
-      setProducts(response.data);
-    });
+    dispatch(getAllProducts());
   }, []);
 
   return (
@@ -27,12 +31,23 @@ const DisplayProducts: React.FC = () => {
       }}
       wrap="wrap"
     >
-      {products.map((item: any) => (
+      {productsList.map((item: any) => (
         <Card
           style={{ width: 300 }}
           hoverable
           cover={
-            <img src={item?.img} style={{ width: "300px", height: "300px" }} />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img
+                src={item?.img}
+                style={{ width: "200px", height: "200px" }}
+              />
+            </div>
           }
         >
           <Meta title={item?.name} description={item?.description} />
